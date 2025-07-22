@@ -202,7 +202,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ## 📞 Support
 
-For support, questions, or feature requests, please open an issue on GitHub or contact the development team at [support@example.com](mailto:support@example.com).
+For support, questions, or feature requests, please open an issue on GitHub or contact the development team at [ettorecar.git  at gmail ]
 
 ---
 
