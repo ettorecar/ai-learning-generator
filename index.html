@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <!-- basic -->
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <!-- mobile metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+   <!-- site metas -->
+   <title>Ai-Learning</title>
+   <meta name="keywords" content="">
+   <meta name="description" content="">
+   <meta name="author" content="">
+   <!-- bootstrap css -->
+   <link rel="stylesheet" href="css/bootstrap.min.css">
+   <!-- style css -->
+   <link rel="stylesheet" href="css/style.css">
+   <!-- Responsive-->
+   <link rel="stylesheet" href="css/responsive.css">
+   <!-- prova -->
+   <link rel="stylesheet" href="css/index.css">
+   <!-- favicon -->
+   <link rel="icon" href="images/Brain-Games.ico" type="image/gif" />
+   <!-- Scrollbar Custom CSS -->
+   <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+   <!-- Tweaks for older IEs-->
+   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
+      media="screen">
+   <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+
+   <style>
+      /* Aggiungi questa regola al CSS del tag <body> */
+      body {
+         /* display: flex; */
+         justify-content: space-between;
+      }
+
+
+      /* Stile del quiz preview */
+      /* #quiz-preview {
+             float: right;
+             width: 50%;
+             margin: 0 0 20px 20px;
+             padding: 20px;
+             background-color: #f2f2f2;
+             border: 1px solid #ccc;
+             border-radius: 5px;
+             box-sizing: border-box;
+         } */
+
+      /* Stile delle domande e delle risposte */
+      .question-container {
+         margin-bottom: 20px;
+      }
+
+      .question-container h2 {
+         margin-bottom: 10px;
+      }
+
+      .answer-container {
+         margin-bottom: 10px;
+      }
+
+      /* Stile dei pulsanti */
+      button {
+         padding: 10px 20px;
+         background-color: #4CAF50;
+         color: #fff;
+         border: none;
+         border-radius: 5px;
+         cursor: pointer;
+      }
+
+      button:hover {
+         background-color: #3e8e41;
+      }
+   </style>
+
+
+
+
+   <title>Quiz Generator</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <script>
+      function generateQuiz() {
+         // Get user inputs
+         const topic = document.getElementById("topicTextArea").value;
+         const article = document.getElementById("articleTextArea").value;
+         const url = document.getElementById("pasteUrl").value;
+         const random_topic = document.getElementById("hiddenRandom").value;
+         const numQuestions = parseInt(document.getElementById("num_of_questions").value);
+         const numReplies = parseInt(document.getElementById("num_of_replies").value);
+         const replyType = document.querySelector('input[name="type_of_replies"]:checked').value;
+         const thresholdPercent = parseInt(document.getElementById("threshold_percent").value);
+         const language = document.getElementById("language").value;
+
+         // Generate quiz title
+
+         // Generate quiz title
+         const title = document.createElement("div");
+         title.classList.add("color_preview");
+         title.textContent = language === "italian" ? "Anteprima Questionario" : "Questionnaire Preview";
+         document.getElementById("quiz-preview").appendChild(title);
+
+
+         // Generate quiz questions
+         for (let i = 1; i <= numQuestions; i++) {
+            // Create question container
+            const questionContainer = document.createElement("div");
+            questionContainer.classList.add("question-container");
+            document.getElementById("quiz-preview").appendChild(questionContainer);
+
+            // Create question text
+            const questionText = document.createElement("h2");
+            questionText.textContent = `${language === "italian" ? "Domanda" : "Question"} ${i}`;
+            questionContainer.appendChild(questionText);
+
+            // Generate answer options based on reply type
+            for (let j = 1; j <= numReplies; j++) {
+               const answerContainer = document.createElement("div");
+               answerContainer.classList.add("answer-container");
+               questionContainer.appendChild(answerContainer);
+
+
+               if (replyType === "single_answer") {
+                  // Create radio button
+                  const radio = document.createElement("input");
+                  radio.type = "radio";
+                  radio.name = `question${i}`;
+                  radio.id = `question${i}-option${j}`;
+                  radio.classList.add('radio_single_answer');
+                  answerContainer.appendChild(radio);
+               } else {
+                  // Create checkbox
+                  const checkbox = document.createElement("input");
+                  checkbox.type = "checkbox";
+                  checkbox.name = `question${i}-option${j}`;
+                  checkbox.id = `question${i}-option${j}`;
+                  checkbox.classList.add('checkbox_multiple_choice');
+                  answerContainer.appendChild(checkbox);
+               }
+
+               // Create answer label
+               const answerLabel = document.createElement("label");
+               answerLabel.textContent = `${language === "italian" ? "Risposta" : "Answer"} ${String.fromCharCode(64 + j)}`;
+               answerLabel.htmlFor = `question${i}-option${j}`;
+               answerContainer.appendChild(answerLabel);
+            }
+         }
+      }
+
+
+      function resetSourceContent() {
+         //in questa funzione, quando si passa da article a topic ecc, si sbiancano tutti i campi compresi tutti gli hidden
+         //richiamare questa funzione alla pressione dei bottoni "paste an article" ecc
+         //sbiancare tutti gli altri e anche il value di hiddenRandom
+         //article
+         const hiddenArticle = document.getElementById("hiddenArticle");
+         articleTextArea.value = "";
+         hiddenArticle.value = articleTextArea.value;
+         const article = document.getElementById("hiddenArticle").value;
+         //topic
+         const hiddenTopic = document.getElementById("hiddenTopic");
+         topicTextArea.value = "";
+         hiddenTopic.value = topicTextArea.value;
+         const topic = document.getElementById("hiddenTopic").value;
+         //url
+         const hiddenUrl = document.getElementById("hiddenUrl");
+         pasteUrl.value = "";
+         hiddenUrl.value = pasteUrl.value;
+         const url = document.getElementById("hiddenUrl").value;
+         //random
+         const hiddenRandom = document.getElementById("hiddenRandom");
+         randomTopichref.value = "";
+         hiddenRandom.value = randomTopichref.value;
+         const random_topic = document.getElementById("hiddenRandom").value;
+
+      }
+
+
+
+      function init() {
+         console.log('sono in init');
+         //copia il contenuto della textbox Topic (che è fuori dal form) in un campo hidden del form.
+         //inoltre ricontrolla abilitazione submit e preview questionario
+         topicTextArea.addEventListener("change", () => {
+            const topicTextArea = document.getElementById("topicTextArea");
+            const hiddenTopic = document.getElementById("hiddenTopic");
+            hiddenTopic.value = topicTextArea.value;
+            // hiddenArticle.value="";
+            // hiddenUrl.value ="";
+            enablePreviewAndSubmit();
+         });
+
+         pasteUrl.addEventListener("change", () => {
+            const pasteUrl = document.getElementById("pasteUrl");
+            const hiddenUrl = document.getElementById("hiddenUrl");
+            hiddenUrl.value = pasteUrl.value;
+            // hiddenArticle.value="";
+            // hiddenTopic.value ="";           
+            enablePreviewAndSubmit();
+         });
+
+         articleTextArea.addEventListener("change", () => {
+            const articleTextArea = document.getElementById("articleTextArea");
+            const hiddenArticle = document.getElementById("hiddenArticle");
+            hiddenArticle.value = articleTextArea.value;
+            // hiddenTopic.value="";
+            // hiddenUrl.value ="";        
+            enablePreviewAndSubmit();
+         });
+
+         randomTopic.addEventListener("click", () => {
+            // const randomTopichref = document.getElementById("randomTopichref");
+            const hiddenRandom = document.getElementById("hiddenRandom");
+            hiddenRandom.value = "true";
+            // hiddenArticle.value="";
+            // hiddenTopic.value ="";           
+            enablePreviewAndSubmit();
+         });
+
+         const form = document.querySelector(".generated-form");
+         form.addEventListener("change", () => {
+            enablePreviewAndSubmit();
+         });
+      }
+
+      function enablePreviewAndSubmit() {
+         document.getElementById("quiz-preview").innerHTML = "";
+         // Utilizza le variabili dichiarate all'interno della funzione init
+         const article = document.getElementById("articleTextArea").value;
+         const topic = document.getElementById("topicTextArea").value;
+         const url = document.getElementById("pasteUrl").value;
+         const random_topic = document.getElementById("hiddenRandom").value;
+
+         const numQuestions = parseInt(document.getElementById("num_of_questions").value);
+         const numReplies = parseInt(document.getElementById("num_of_replies").value);
+         const replyType = document.querySelector('input[name="type_of_replies"]:checked').value;
+         const thresholdPercent = parseInt(document.getElementById("threshold_percent").value);
+         const language = document.getElementById("language").value;
+
+         // Remove previous quiz preview
+         const previousQuiz = document.querySelector("h1, .question-container");
+         if (previousQuiz) {
+            previousQuiz.remove();
+         }
+
+         if (topic || url || article || random_topic) {
+            if (!numQuestions || !numReplies || !replyType || !language || !thresholdPercent) {
+               document.getElementById("submitButton").setAttribute("disabled", "");
+               return;
+            }
+         } else {
+            document.getElementById("submitButton").setAttribute("disabled", "");
+            return;
+         }
+
+
+
+         generateQuiz(); // Rimuovi i parametri qui
+         document.getElementById("submitButton").removeAttribute("disabled");
+      }
+
+
+
+
+   </script>
+</head>
+<!-- body -->
+
+<body class="main-layout">
+   <!-- loader  -->
+   <div class="loader_bg">
+      <div class="loader"><img src="images/loading.gif" alt="#" /></div>
+   </div>
+   <!-- end loader -->
+   <div class="wrapper">
+      <!-- end loader -->
+      <div class="sidebar">
+         <!-- Sidebar  -->
+         <nav id="sidebar">
+            <div id="dismiss">
+               <i class="fa fa-arrow-left"></i>
+            </div>
+            <ul class="list-unstyled components">
+               <li class="active"> <a href="#">Home</a> </li>
+               <li><a href="#about">About </a> </li>
+               <li><a href="#work">Work</a> </li>
+               <li><a href="#contact">Contact </a> </li>
+            </ul>
+         </nav>
+      </div>
+      <div id="content">
+         <!-- header -->
+         <header>
+            <!-- header inner -->
+            <div class="header">
+               <div class="container-fluid">
+                  <div class="row">
+                     <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                        <div class="full">
+                           <div class="center-desk">
+                              <div class="logo">
+                                 <a href="index.html"><img src="images/logo5.png" alt="#" /></a>
+
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                        <ul class="btn">
+                           <!--<li class="down_btn"><a href="#">Download</a></li>-->
+                           <li><a href="#">Sign Up</a></li>
+                           <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+                           <li><button type="button" id="sidebarCollapse">
+                                 <img src="images/menu_icon.png" alt="#" />
+                              </button>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </header>
+         <!-- end header inner -->
+         <!-- end header -->
+         <!-- banner -->
+         <div id="myCarousel" class="carousel slide banner_main" data-ride="carousel">
+            <ol class="carousel-indicators">
+               <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+               <li data-target="#myCarousel" data-slide-to="1"></li>
+               <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+               <div class="carousel-item active">
+                  <div class="container-fluid">
+                     <div class="carousel-caption">
+                        <div class="row">
+                           <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
+                              <div class="text-bg">
+                                 <h1>Create<br> eLearning Course <br>using AI</h1>
+                                 <p>Our project allows you to build an eLearning course and a related questionnaire in
+                                    seconds using Artificial Intelligence </p>
+                                 <a class="read_more" href="#">Read more</a>
+                              </div>
+                           </div>
+                           <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12">
+                              <div class="images_box">
+                                 <figure><img src="images/img2.png"></figure>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="carousel-item">
+                  <div class="container-fluid ">
+                     <div class="carousel-caption">
+                        <div class="row">
+                           <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
+                              <div class="text-bg">
+                                 <h1>Speed ​​up<br>a drafting<br> process</h1>
+                                 <p>through our solution you can quickly create concise courses consistent with the
+                                    selected topic, or focus on the contents instead of translations or searching for
+                                    questions and fictitious answers</p>
+                                 <a class="read_more" href="#">Read more</a>
+                              </div>
+                           </div>
+                           <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12">
+                              <div class="images_box">
+                                 <figure><img src="images/imgcarosel3.png"></figure>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="carousel-item">
+                  <div class="container-fluid">
+                     <div class="carousel-caption ">
+                        <div class="row">
+                           <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
+                              <div class="text-bg">
+                                 <h1>Save time<br>for less<br> repetitive tasks</h1>
+                                 <p>Artificial intelligence offers the possibility of assisting us both in more
+                                    consolidated tasks and in speeding up the creative process of implementing ideas</p>
+                                 <a class="read_more" href="#">Read more</a>
+                              </div>
+                           </div>
+                           <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12">
+                              <div class="images_box">
+                                 <figure><img src="images/imgcarosel4.png"></figure>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+               <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+            </a>
+            <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+               <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </a>
+         </div>
+         <!-- end banner -->
+         <!-- about -->
+         <div id="about" class="about">
+            <div class="container-fluid">
+               <div class="row d_flex">
+                  <div class="col-md-5">
+                     <div class="about_img">
+                        <figure><img src="images/about_img.jpg" alt="#" /></figure>
+                     </div>
+                  </div>
+                  <div class="col-md-7">
+                     <div class="titlepage">
+                        <h2>Our <span class="blu">Technology</span></h2>
+                        <p>
+                           We rely on the APIs provided by Artificial Intelligence to
+                           generate a complete course starting from a few inputs, such as a topic, a wiki page or an
+                           entire original article. </p>
+                        <a class="read_more">Start Here</a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- end about -->
+         <!-- choose  section -->
+         <div class="choose ">
+            <div class="choose_bg">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="titlepage">
+                           <h2>Select <span class="white"> Source</span></h2>
+                        </div>
+                     </div>
+                     <div class="col-md-12">
+                        <div class="row">
+                           <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 padding_right0">
+                              <ul class="easy nav nav-pills" role="tablist">
+                                 <li><a class="nav-link active" id="article" data-toggle="pill" href="#articlehref"
+                                       aria-selected="true" role="tab" aria-controls="articlehref"
+                                       onclick="resetSourceContent()">Paste an Article</a>
+                                 </li>
+                                 <li><a class="nav-link" id="topicrefid" data-toggle="pill" href="#topichref"
+                                       aria-selected="false" role="tab" aria-controls="topichref"
+                                       onclick="resetSourceContent()">Select a Topic</a>
+                                 </li>
+                                 <li><a class="nav-link" id="pastUrl" data-toggle="pill" href="#pasteUrlref"
+                                       aria-selected="false" role="tab" aria-controls="pasteUrlref"
+                                       onclick="resetSourceContent()">Paste a URL</a></li>
+                                 <li><a class="nav-link" id="randomTopic" data-toggle="pill" href="#randomTopichref"
+                                       aria-selected="false" role="tab" aria-controls="randomTopichref"
+                                       onclick="resetSourceContent()">Random Topic</a>
+                                 </li>
+                              </ul>
+                           </div>
+
+                           <div class="col-xl-9 col-lg-9 col-md-9 col-sm-12 padding_left0 tab-content">
+                              <div class="tab-pane fade show active choose_box" id="articlehref" role="tabpanel"
+                                 aria-labelledby="article">
+                                 <i><img src="images/_article.svg" alt="My Happy SVG" /></i>
+                                 <h3> Write the article</h3>
+                                 <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p> -->
+                                 <textarea class="form-control" id="articleTextArea" rows="6"
+                                    placeholder="Paste a full article, document, or manual here"></textarea>
+                              </div>
+
+                              <div class="tab-pane fade choose_box areaBox" id="topichref" role="tabpanel"
+                                 aria-labelledby="topicrefid">
+                                 <div class="form-group">
+                                    <i><img src="images/_topic.svg" alt="#" /></i>
+                                    <h3> Write the topic</h3>
+                                    <textarea class="textarea form-control" id="topicTextArea" name="topicTextArea"
+                                       placeholder="Artificial Intelligence"></textarea>
+                                 </div>
+                              </div>
+
+                              <div class="tab-pane fade choose_box" id="pasteUrlref" role="tabpanel"
+                                 aria-labelledby="pastUrl">
+                                 <div class="form-group">
+                                    <i><img src="images/_url.svg" alt="#" /></i>
+                                    <h3> Write the url</h3>
+                                    <div class="input-group mb-3">
+                                       <input type="text" class="form-control" id="pasteUrl" name="pasteUrl"
+                                          placeholder="www.wikipedia.com" aria-label="Recipient's username"
+                                          aria-describedby="basic-addon2">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="tab-pane fade  choose_box" id="randomTopichref" role="tabpanel"
+                                 aria-labelledby="randomTopic">
+                                 <div class="form-group">
+                                    <i><img src="images/_random.svg" alt="#" /></i>
+                                    <h3> Random topic</h3><br>
+                                    <p>Try this feature to test yourself on a random topic chosen by artificial
+                                       intelligence.You can still choose the number of questions and answers in the
+                                       following form.</p>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="choose_bg_blue pt-5">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="titlepage">
+                           <h2>Setup <span class="white"> Questionnaire</span></h2>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <!-- inizio form -->
+                        <form id="request" class="generated-form main_form" method="get" action="quiz.html">
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <label class="color_font" for="num_of_questions">Number of questions:</label>
+                                 <input class="contactus" type="number" id="num_of_questions" name="num_of_questions">
+                              </div>
+                              <div class="col-md-12">
+                                 <label class="color_font" for="num_of_replies">Number of replies:</label>
+                                 <input class="contactus" type="number" id="num_of_replies" name="num_of_replies">
+                              </div>
+                              <div class="col-md-12">
+                                 <label class="color_font" for="type_of_replies">Type of replies:</label><br>
+                                 <div class="container_radio">
+                                    <input class="contactus color_font radioLabel w-25" type="radio" id="single_answer"
+                                       name="type_of_replies" value="single_answer" checked="checked"><label
+                                       for="single_answer">Single
+                                       Answer</label><br></input>
+                                 </div>
+                                 <div class="container_radio">
+                                    <input class="contactus color_font  radioLabel w-25" type="radio"
+                                       id="multiple_choice" name="type_of_replies" value="multiple_choice"><label
+                                       for="multiple_choice">Multiple Choice</label></input>
+                                 </div>
+                              </div>
+                             
+                              <div class="col-md-12">
+                                 <br>
+                                 <div class="slidecontainer">
+                                    <label class="color_font" for="threshold_range">Threshold range:</label>
+                                    <br>
+                                    <input class="threshold_percent" name="threshold_percent" id="threshold_percent" type="range" min="1" max="100" value="50">
+                                 </div>
+                                 <div class="container_radio">
+                                    Value: <span id="demo" style="padding-left: 5px;"></span>
+                                 </div>
+                                 <script>
+                                    var slider = document.getElementById("threshold_percent");
+                                    var output = document.getElementById("demo");
+                                    output.innerHTML = slider.value;
+
+                                    slider.oninput = function () {
+                                       output.innerHTML = this.value;
+                                    }
+                                 </script>
+                              </div>
+                              <br>
+                              <div class="col-md-12 mt-4">
+                                 <label class="color_font" for="language">Choose a language:</label><br>
+                                 <select class="contactus" name="language" id="language">
+                                    <option value="italian">Italian</option>
+                                    <option value="english">English</option>
+                                    <option value="french">French</option>
+                                    <option value="spanish">Spanish</option>
+                                 </select><br><br>
+                              </div>
+                           </div>
+                           <input type="hidden" id="hiddenArticle" name="article">
+                           <input type="hidden" id="hiddenTopic" name="topic">
+                           <input type="hidden" id="hiddenUrl" name="url">
+                           <input type="hidden" id="hiddenRandom" name="random_topic">
+                           <button type="submit" class="submit-btn" name="" id="submitButton" value="Generate"
+                              disabled="disabled">Generate!</button>
+
+                        </form>
+                        <div class="col-md-12 mb-5">
+                           <!-- <button class="submit-btn active-arrow" type="submit" onclick='startCombine(this);'>Generate</button> -->
+
+                           <!-- <input type="button" class="submit-btn" name=myButton value="Generate" disabled="disabled" > -->
+                        </div>
+                        <!-- fine form -->
+                     </div>
+                     <div class="col-md-6">
+                        <div id="quiz-preview" class="contactus"></div>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+            <!-- fine prova -->
+         </div>
+         <!-- request -->
+
+         <script>
+            // Initial quiz preview generation
+            init();
+         </script>
+         <!-- end request -->
+      </div>
+   </div>
+   <!-- end choose  section -->
+
+
+   <!--  footer -->
+   <footer>
+      <div class="footer">
+         <div class="container">
+            <div class="row">
+               <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                  <div class="row">
+                     <div class="col-md-8 col-sm-6">
+                        <div class="address">
+                           <h3>Our Research </h3>
+                        </div>
+                        <ul class="location_icon">
+                           <li>The purpose of our projects is to investigate new uses of the API offered by AI and
+                              similar products, in order to speed up business, coding and editorial processes</li>
+                        </ul>
+                     </div>
+                     <div class="col-md-4 col-sm-6">
+                        <div class="address">
+                           <h3>Links</h3>
+                           <ul class="Menu_footer">
+                              <li class="active"> <a href="#">Home</a> </li>
+                              <li><a href="#about">About </a> </li>
+                              <li><a href="#work">API</a> </li>
+                              <li><a href="#contact">Contact </a> </li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                  <div class="row">
+                     <div class="col-md-5 col-sm-6">
+                        <div class="address">
+                           <h3>Follow Us</h3>
+                        </div>
+                        <ul class="social_icon">
+                           <li><a href="#">Facebook <i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                           <li><a href="#"> Twitter<i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                           <li><a href="#"> Linkedin<i class="fa fa-linkedin-square" aria-hidden="true"></i></a></li>
+                           <li><a href="#"> Youtube<i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                           <li><a href="#"> Instagram<i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                        </ul>
+                     </div>
+                     <div class="col-md-7 col-sm-6">
+                        <div class="address">
+                           <h3>Newsletter </h3>
+                        </div>
+                        <form class="bottom_form">
+                           <input class="enter" placeholder="Enter Your Email" type="text" name="Enter Your Email">
+                           <button class="sub_btn">subscribe</button>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="copyright">
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-12">
+                     <p>Copyright 2023 All Right Reserved</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </footer>
+   <!-- end footer -->
+   </div>
+   <div class="overlay"></div>
+   <!-- Javascript files-->
+   <script src="js/jquery.min.js"></script>
+   <script src="js/popper.min.js"></script>
+   <script src="js/bootstrap.bundle.min.js"></script>
+   <script src="js/jquery-3.0.0.min.js"></script>
+   <!-- sidebar -->
+   <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+   <script src="js/custom.js"></script>
+   <script type="text/javascript">
+      $(document).ready(function () {
+         $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+         });
+
+         $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+         });
+
+         $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+         });
+      });
+   </script>
+   <script>
+      $(document).ready(function () {
+         $(".fancybox").fancybox({
+            openEffect: "none",
+            closeEffect: "none"
+         });
+
+         $(".zoom").hover(function () {
+
+            $(this).addClass('transition');
+         }, function () {
+
+            $(this).removeClass('transition');
+         });
+      });
+   </script>
+
+</body>
+
+</html>

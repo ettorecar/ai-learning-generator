@@ -1,0 +1,39 @@
+{
+  "name": "ai-learning-generator",
+  "version": "1.0.0",
+  "description": "AI-Powered E-Learning Course & Quiz Generator using OpenAI",
+  "main": "index.html",
+  "scripts": {
+    "start": "python app.py",
+    "setup": "pip install -r requirements.txt",
+    "serve": "python -m http.server 5500"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ettorecar/ai-learning-generator.git"
+  },
+  "keywords": [
+    "ai",
+    "artificial-intelligence",
+    "openai",
+    "education",
+    "e-learning",
+    "quiz",
+    "course-generator",
+    "gpt",
+    "dall-e",
+    "flask"
+  ],
+  "authors": [
+    {
+      "name": "Your Name",
+      "email": "your-email@example.com",
+      "url": "https://your-website.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ettorecar/ai-learning-generator/issues"
+  },
+  "homepage": "https://github.com/ettorecar/ai-learning-generator#readme"
+}
