@@ -189,8 +189,8 @@ CORS(app, resources={r"/*": {"origins": "http://your-frontend-url"}})
 
 ## �‍💻 Authors
 
-- **[Ettore Carpinella]** - *Project Creator & Lead Developer* - [your-email@example.com](mailto:your-email@example.com)
-- **[Maria Rosaria Lorito, Raffaella Tuozzolo]** - *Contributor* - [collaborator@example.com](mailto:collaborator@example.com)
+- **[Ettore Carpinella]** - *Project Creator & Lead Developer*
+- **[Maria Rosaria Lorito, Raffaella Tuozzolo]** - *Senior developer*
 
 ## �📄 License
 
