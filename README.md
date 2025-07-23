@@ -189,8 +189,8 @@ CORS(app, resources={r"/*": {"origins": "http://your-frontend-url"}})
 
 ## �‍💻 Authors
 
-- **[Ettore Carpinella]** - *Project Creator & Lead Developer* - [your-email@example.com](mailto:your-email@example.com)
-- **[Maria Rosaria Lorito, Raffaella Tuozzolo]** - *Contributor* - [collaborator@example.com](mailto:collaborator@example.com)
+- **[Ettore Carpinella]** - *Project Creator & Lead Developer*
+- **[Maria Rosaria Lorito, Raffaella Tuozzolo]** - *Senior developers*
 
 ## �📄 License
 
@@ -202,7 +202,7 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ## 📞 Support
 
-For support, questions, or feature requests, please open an issue on GitHub or contact the development team at [support@example.com](mailto:support@example.com).
+For support, questions, or feature requests, please open an issue on GitHub or contact the development team at [ettorecar.git  at gmail ]
 
 ---
 
