@@ -1,0 +1,168 @@
+# GitHub Linguist Configuration
+# Control language detection and statistics
+
+# ===== MARK CSS AS VENDORED (THIRD-PARTY) =====
+# This prevents CSS from being counted as the main language
+*.css linguist-vendored
+css/* linguist-vendored
+static/css/* linguist-vendored
+templates/static/css/* linguist-vendored
+node_modules/css/* linguist-vendored
+
+# Specific CSS frameworks to be ignored
+css/bootstrap*.css linguist-vendored
+css/animate.min.css linguist-vendored
+css/font-awesome.min.css linguist-vendored
+css/jquery*.css linguist-vendored
+css/owl.carousel.min.css linguist-vendored
+css/slick.css linguist-vendored
+
+# ===== EMPHASIZE PYTHON =====
+# Mark Python files as the primary language
+*.py linguist-language=Python
+*.pyw linguist-language=Python
+*.pyi linguist-language=Python
+
+# Python directories
+app.py linguist-language=Python
+config.py linguist-language=Python
+openai_mw.py linguist-language=Python
+tests/* linguist-language=Python
+utils/* linguist-language=Python
+models/* linguist-language=Python
+scripts/* linguist-language=Python
+__init__.py linguist-language=Python
+
+# Python configuration files
+setup.py linguist-language=Python
+pyproject.toml linguist-language=Python
+requirements.txt linguist-language=Python
+
+# ===== EMPHASIZE JAVASCRIPT =====
+# Mark JavaScript files as secondary language
+*.js linguist-language=JavaScript
+js/* linguist-language=JavaScript
+static/js/* linguist-language=JavaScript
+quiz.js linguist-language=JavaScript
+constants.js linguist-language=JavaScript
+
+# Exclude minified JavaScript from stats
+*.min.js linguist-vendored
+js/*.min.js linguist-vendored
+js/bootstrap*.js linguist-vendored
+js/jquery*.js linguist-vendored
+
+# ===== MARK HTML TEMPLATES =====
+*.html linguist-language=HTML
+index.html linguist-language=HTML
+quiz.html linguist-language=HTML
+templates/* linguist-language=HTML
+
+# ===== DOCUMENTATION FILES =====
+# Mark documentation as non-code
+*.md linguist-documentation
+*.rst linguist-documentation
+*.txt linguist-documentation
+README.md linguist-documentation
+CHANGELOG.md linguist-documentation
+CONTRIBUTING.md linguist-documentation
+DEPLOYMENT.md linguist-documentation
+PROJECT_SUMMARY.md linguist-documentation
+ROADMAP.md linguist-documentation
+SECURITY.md linguist-documentation
+API.md linguist-documentation
+LICENSE linguist-documentation
+
+# ===== CONFIGURATION FILES =====
+# Mark various config files appropriately
+*.json linguist-data
+*.yaml linguist-data
+*.yml linguist-data
+*.toml linguist-data
+*.ini linguist-data
+*.cfg linguist-data
+package.json linguist-data
+.env* linguist-data
+env.template linguist-data
+
+# ===== EXCLUDE GENERATED/VENDOR FILES =====
+# Build and dependency directories
+node_modules/* linguist-vendored
+build/* linguist-vendored
+dist/* linguist-vendored
+*.egg-info/* linguist-vendored
+__pycache__/* linguist-vendored
+.pytest_cache/* linguist-vendored
+htmlcov/* linguist-vendored
+
+# Font files
+fonts/* linguist-vendored
+*.eot linguist-vendored
+*.ttf linguist-vendored
+*.woff linguist-vendored
+*.woff2 linguist-vendored
+*.otf linguist-vendored
+
+# Image files
+images/* linguist-vendored
+*.png linguist-vendored
+*.jpg linguist-vendored
+*.jpeg linguist-vendored
+*.gif linguist-vendored
+*.svg linguist-vendored
+*.ico linguist-vendored
+
+# ===== SHELL SCRIPTS =====
+*.sh linguist-language=Shell
+*.bat linguist-language=Batchfile
+setup.sh linguist-language=Shell
+setup.bat linguist-language=Batchfile
+
+# ===== FORCE DETECTION =====
+# Ensure these are always detected
+*.py linguist-detectable=true
+*.js linguist-detectable=true
+*.html linguist-detectable=true
+
+# ===== LANGUAGE OVERRIDES =====
+# Force specific files to be recognized
+app.py linguist-detectable=true
+openai_mw.py linguist-detectable=true
+config.py linguist-detectable=true
+quiz.js linguist-detectable=true
+constants.js linguist-detectable=true
+
+# ===== EXCLUDE FROM DIFF =====
+# Large or binary files to exclude from diffs
+*.min.css -diff
+*.min.js -diff
+*.map -diff
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.ttf binary
+*.woff binary
+*.woff2 binary
+*.eot binary
+*.otf binary
+
+# ===== LINE ENDING CONFIGURATION =====
+# Normalize line endings
+* text=auto
+*.py text eol=lf
+*.js text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+
+# ===== MERGE STRATEGIES =====
+# Special merge handling for certain files
+package-lock.json merge=ours
+*.lock merge=ours
