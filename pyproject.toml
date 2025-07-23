@@ -1,0 +1,278 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-learning-generator"
+version = "1.0.0"
+description = "AI-powered educational content generation platform"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "AI Learning Generator Team", email = "contact@ai-learning-generator.com"}
+]
+maintainers = [
+    {name = "AI Learning Generator Team", email = "contact@ai-learning-generator.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Topic :: Education",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: Flask",
+    "Environment :: Web Environment",
+    "Operating System :: OS Independent",
+]
+keywords = [
+    "ai", "education", "quiz", "learning", "openai", "gpt",
+    "flask", "web", "api", "machine-learning", "nlp",
+    "educational-technology", "content-generation", "assessment"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "Flask>=2.3.0",
+    "Flask-CORS>=4.0.0",
+    "openai>=1.0.0",
+    "python-dotenv>=1.0.0",
+    "requests>=2.31.0",
+    "PyYAML>=6.0.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "validators>=0.22.0",
+    "markdown>=3.5.0",
+    "markdownify>=0.11.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+docs = [
+    "sphinx>=7.0.0",
+    "sphinx-rtd-theme>=1.3.0",
+    "myst-parser>=2.0.0",
+]
+prod = [
+    "gunicorn>=21.0.0",
+    "redis>=5.0.0",
+    "psycopg2-binary>=2.9.0",
+    "sentry-sdk>=1.30.0",
+]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "pytest-asyncio>=0.21.0",
+    "coverage>=7.0.0",
+]
+security = [
+    "cryptography>=41.0.0",
+    "bcrypt>=4.0.0",
+    "PyJWT>=2.8.0",
+]
+ml = [
+    "scikit-learn>=1.3.0",
+    "scipy>=1.11.0",
+    "nltk>=3.8.0",
+    "matplotlib>=3.8.0",
+    "seaborn>=0.12.0",
+]
+full = [
+    "ai-learning-generator[dev,docs,prod,test,security,ml]"
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/ai-learning-generator"
+Documentation = "https://ai-learning-generator.readthedocs.io/"
+Repository = "https://github.com/yourusername/ai-learning-generator.git"
+"Bug Tracker" = "https://github.com/yourusername/ai-learning-generator/issues"
+Changelog = "https://github.com/yourusername/ai-learning-generator/blob/main/CHANGELOG.md"
+
+[project.scripts]
+ai-quiz-generator = "scripts.generate_quiz:main"
+ai-data-manager = "scripts.data_manager:main"
+ai-learning-server = "app:main"
+
+[tool.setuptools.packages.find]
+exclude = ["tests*", "docs*", "examples*"]
+
+[tool.setuptools.package-data]
+"*" = [
+    "templates/*.html",
+    "static/css/*.css",
+    "static/js/*.js",
+    "static/images/*",
+    "config/*.yaml",
+    "config/*.json",
+]
+
+# ===== TOOL CONFIGURATIONS =====
+
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+  | migrations
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["ai_learning_generator"]
+known_third_party = ["flask", "openai", "pandas", "numpy", "pytest"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503", "E501"]
+exclude = [
+    ".git",
+    "__pycache__",
+    ".venv",
+    "build",
+    "dist",
+    "*.egg-info",
+    "migrations"
+]
+per-file-ignores = [
+    "__init__.py:F401",
+    "tests/*:S101",
+]
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+exclude = [
+    "build/",
+    "dist/",
+    ".venv/",
+    "migrations/",
+]
+
+[[tool.mypy.overrides]]
+module = [
+    "openai.*",
+    "flask_cors.*",
+    "markdownify.*",
+    "validators.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--cov=ai_learning_generator",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+testpaths = ["tests"]
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "api: marks tests as API tests",
+    "cli: marks tests as CLI tests",
+]
+
+[tool.coverage.run]
+source = ["ai_learning_generator"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "setup.py",
+    "*/venv/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.bandit]
+exclude_dirs = ["tests", "migrations"]
+skips = ["B101", "B601"]
+
+[tool.pylint.messages_control]
+disable = [
+    "C0330",
+    "C0326",
+    "line-too-long",
+    "import-error",
+    "too-few-public-methods",
+]
+
+[tool.pylint.format]
+max-line-length = "88"
+
+[tool.pylint.design]
+max-args = 10
+max-locals = 15
+max-returns = 6
+max-branches = 12
+max-statements = 50
+max-parents = 7
+max-attributes = 15
+max-public-methods = 25
